@@ -12,7 +12,7 @@ Easy 2D browser game engine
 1. Clone the repository:
    ```sh
    git clone https://github.com/your-username/EzEngine.git
-   cd EzEngine
+   cd EzGame
    ```
 
 2. Build and start the Docker containers:

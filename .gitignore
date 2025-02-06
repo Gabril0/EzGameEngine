@@ -12,7 +12,6 @@ yarn-error.log*
 
 # Docker
 docker-compose.override.yml
-Dockerfile*
 
 # Editor directories and files
 .vscode/
