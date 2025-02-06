@@ -1,5 +1,5 @@
 {
-    "name": "EzEngine",
+    "name": "EzGame",
     "version": "0.0.5",
     "description": "Easy 2D browser game engine",
     "main": "server.js",
