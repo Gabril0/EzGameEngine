@@ -16,5 +16,10 @@ Easy 2D browser game engine
    ```
 
 2. Build and start the Docker containers:
-```docker-compose up --build```
-3. Open your browser and navigate to `http://localhost:8080`
+```docker
+docker-compose up --build
+```
+4. Open your browser and navigate to
+```
+http://localhost:8080
+```
