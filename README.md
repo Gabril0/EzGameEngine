@@ -11,7 +11,7 @@ Easy 2D browser game engine
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/EzEngine.git
+   git clone https://github.com/Gabril0/EzGame.git
    cd EzGame
    ```
 
