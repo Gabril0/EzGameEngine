@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script src="/node_modules/fengari-web/dist/fengari-web.js"></script>
+    <script type="module" src="/src/editor.js"></script>
+    <script type="module" src="/src/EditorTools/Button.js"></script>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
@@ -18,9 +20,6 @@
             const synth = new Tone.Synth().toDestination();
             synth.triggerAttackRelease("C4", "8n");
         });
-
-        const app = new PIXI.Application({ width: 800, height: 600, backgroundColor: 0x1099bb });
-        document.body.appendChild(app.view);
 
         if (typeof fengari !== 'undefined') {
             fengari.load('print("Lua test")')();
