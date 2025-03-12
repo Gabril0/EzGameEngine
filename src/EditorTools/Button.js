@@ -14,17 +14,17 @@ function Button(app, width, height, pos_x, pos_y, text) {
     this.update = function() {
         const button = new PIXI.Graphics();
         button.beginFill(this.button_color);
-        button.drawRect(0, 0, this.width, this.height); // use this.width instead of width
+        button.drawRect(0, 0, this.width, this.height);
         button.endFill();
 
-        button.x = this.pos_x; // use this.pos_x instead of pos_x
-        button.y = this.pos_y; // use this.pos_y instead of pos_y
-
+        button.x = this.pos_x;
+        button.y = this.pos_y;
+        
         button.interactive = true;
         button.buttonMode = true;
 
         const buttonText = new PIXI.Text(this.text, {
-            fontSize: this.font_size,
+            fontSize: this.font_size * (app.view.width / 1920 + app.view.height / 1080) * 0.5,
             fill: this.font_color,
             align: this.alignment,
         });
