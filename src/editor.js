@@ -1,4 +1,4 @@
-import { Button } from '/src/EditorTools/button.js';
+import { Button } from "./EditorTools/Button.js";
 
 window.onload = function () {
     if (typeof PIXI === "undefined") {
