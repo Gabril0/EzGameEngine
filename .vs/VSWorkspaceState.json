@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public"
+    "\\public",
+    "\\src",
+    "\\src\\EditorTools"
   ],
-  "SelectedNode": "\\server.js",
+  "SelectedNode": "\\src\\EditorTools\\Panel.js",
   "PreviewInSolutionExplorer": false
 }

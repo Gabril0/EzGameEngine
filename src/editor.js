@@ -1,4 +1,5 @@
 import { Button } from '/src/EditorTools/button.js';
+import { Panel } from '/src/EditorTools/panel.js';
 
 window.onload = function () {
     if (typeof PIXI === "undefined") {
@@ -6,7 +7,10 @@ window.onload = function () {
         return;
     }
 
-    // Color definitions
+    // Base resolution for scaling
+    const BASE_WIDTH = 1920;
+    const BASE_HEIGHT = 1080;
+
     const BG_COLOR = 0x404040;
     const PANEL_COLOR = 0xB9BAFF;
 
@@ -19,75 +23,79 @@ window.onload = function () {
     });
     document.body.appendChild(app.view);
 
-    // Create buttons (will be updated on resize)
     let game_button, image_button, sound_button, code_button, play_button, pause_button;
-
-    function createUI() {
-        app.stage.removeChildren(); // Remove old elements
-
-        // Header Buttons
-        const button_header_width = app.view.width * 0.1;
-        const button_header_height = app.view.height * 0.05;
-        game_button = new Button(app, button_header_width, button_header_height, 0, 0, "Game");
-        image_button = new Button(app, button_header_width, button_header_height, button_header_width, 0, "Image");
-        sound_button = new Button(app, button_header_width, button_header_height, button_header_width * 2, 0, "Sound");
-        code_button = new Button(app, button_header_width, button_header_height, button_header_width * 3, 0, "Code");
-
-        // Play and Pause buttons
-        play_button = new Button(app, button_header_width / 2, button_header_height, button_header_width * 6, 0, ">");
-        pause_button = new Button(app, button_header_width / 2, button_header_height,
-            button_header_width * 6 + button_header_width / 2, 0, "||");
-
-        // Top Right Section
-        const tr_section_width = app.view.width * 0.2;
-        const tr_section_height = app.view.height * 0.5;
-        const tr_section = new PIXI.Graphics();
-        tr_section.beginFill(PANEL_COLOR);
-        tr_section.drawRect(app.view.width - tr_section_width, app.view.height / 2 - tr_section_height,
-            tr_section_width, tr_section_height);
-        tr_section.endFill();
-        app.stage.addChild(tr_section);
-
-        // Bottom Right Section
-        const br_section_width = app.view.width * 0.2;
-        const br_section_height = app.view.height * 0.49;
-        const br_section = new PIXI.Graphics();
-        br_section.beginFill(PANEL_COLOR);
-        br_section.drawRect(app.view.width - br_section_width, app.view.height - br_section_height,
-            br_section_width, br_section_height);
-        br_section.endFill();
-        app.stage.addChild(br_section);
-
-        // Bottom Section
-        const bottom_section_width = app.view.width * 0.795;
-        const bottom_section_height = app.view.height * 0.3;
-        const bottom_section = new PIXI.Graphics();
-        bottom_section.beginFill(PANEL_COLOR);
-        bottom_section.drawRect(0, app.view.height - bottom_section_height,
-            bottom_section_width, bottom_section_height);
-        bottom_section.endFill();
-        app.stage.addChild(bottom_section);
-
-        // Main Screen
-        const main_section_width = app.view.width * 0.795;
-        const main_section_height = app.view.height * 0.63;
-        const main_section = new PIXI.Graphics();
-        main_section.beginFill(0xFFFFFF);
-        main_section.drawRect(0, app.view.height - main_section_height - bottom_section_height - app.view.height * 0.01,
-            main_section_width, main_section_height);
-        main_section.endFill();
-        app.stage.addChild(main_section);
-
-        // Update buttons
-        const buttons = [game_button, image_button, sound_button, code_button, play_button, pause_button];
-        buttons.forEach(button => button.update());
-    }
+    let topRightPanel, bottomRightPanel, bottomPanel, mainPanel;
 
     createUI();
 
-    // Resize event
     window.onresize = function () {
         app.renderer.resize(window.innerWidth, window.innerHeight);
-        createUI(); // Recreate UI elements with new sizes
+        updateUI();
     };
+
+    function scaleX(value) {
+        return (value / BASE_WIDTH) * window.innerWidth;
+    }
+
+    function scaleY(value) {
+        return (value / BASE_HEIGHT) * window.innerHeight;
+    }
+
+    function createHeaderButtons() {
+        const button_width = scaleX(200);
+        const button_height = scaleY(50);
+
+        game_button = new Button(app, button_width, button_height, scaleX(0), scaleY(0), "Game");
+        image_button = new Button(app, button_width, button_height, scaleX(200), scaleY(0), "Image");
+        sound_button = new Button(app, button_width, button_height, scaleX(400), scaleY(0), "Sound");
+        code_button = new Button(app, button_width, button_height, scaleX(600), scaleY(0), "Code");
+        play_button = new Button(app, button_width / 2, button_height, scaleX(1200), scaleY(0), ">");
+        pause_button = new Button(app, button_width / 2, button_height, scaleX(1300), scaleY(0), "||");
+
+        game_button.onClick = () => alert("CLICKED!!!!!!!!!!!!!!!");
+    }
+
+    function createPanels() {
+        topRightPanel = new Panel(app, scaleX(384), scaleY(540), scaleX(1536), scaleY(270), PANEL_COLOR);
+        bottomRightPanel = new Panel(app, scaleX(384), scaleY(530), scaleX(1536), scaleY(550), PANEL_COLOR);
+        bottomPanel = new Panel(app, scaleX(1530), scaleY(324), scaleX(0), scaleY(756), PANEL_COLOR);
+        mainPanel = new Panel(app, scaleX(1530), scaleY(680), scaleX(0), scaleY(76), 0xFFFFFF);
+    }
+
+    function createUI() {
+        app.stage.removeChildren();
+        createHeaderButtons();
+        createPanels();
+    }
+
+    function updateUI() {
+        const button_width = scaleX(200);
+        const button_height = scaleY(50);
+
+        game_button.updateSize(button_width, button_height);
+        image_button.updateSize(button_width, button_height);
+        sound_button.updateSize(button_width, button_height);
+        code_button.updateSize(button_width, button_height);
+        play_button.updateSize(button_width / 2, button_height);
+        pause_button.updateSize(button_width / 2, button_height);
+
+        game_button.updatePosition(scaleX(0), scaleY(0));
+        image_button.updatePosition(scaleX(200), scaleY(0));
+        sound_button.updatePosition(scaleX(400), scaleY(0));
+        code_button.updatePosition(scaleX(600), scaleY(0));
+        play_button.updatePosition(scaleX(1200), scaleY(0));
+        pause_button.updatePosition(scaleX(1300), scaleY(0));
+
+        topRightPanel.updateSize(scaleX(384), scaleY(540));
+        topRightPanel.updatePosition(scaleX(1536), scaleY(270));
+
+        bottomRightPanel.updateSize(scaleX(384), scaleY(530));
+        bottomRightPanel.updatePosition(scaleX(1536), scaleY(550));
+
+        bottomPanel.updateSize(scaleX(1530), scaleY(324));
+        bottomPanel.updatePosition(scaleX(0), scaleY(756));
+
+        mainPanel.updateSize(scaleX(1530), scaleY(680));
+        mainPanel.updatePosition(scaleX(0), scaleY(76));
+    }
 };

@@ -1,51 +1,67 @@
-function Button(app, width, height, pos_x, pos_y, text) {
-    this.app = app;
-    this.width = width;
-    this.height = height;
-    this.pos_x = pos_x;
-    this.pos_y = pos_y;
-    this.text = text;
-    this.font_size = 24;
-    this.font_color = 0x000000;
-    this.alignment = 'center';
-    this.anchor = 0.5;
-    this.button_color = 0xffffff;
+class Button extends PIXI.Container {
+    constructor(app, width, height, pos_x, pos_y, text) {
+        super();
+        this.app = app;
+        this.originalWidth = width;
+        this.originalHeight = height;
+        this.originalPosX = pos_x;
+        this.originalPosY = pos_y;
+        this.text = text;
+        this.onClick = () => console.log('Button clicked!');
 
-    this.update = function() {
-        const button = new PIXI.Graphics();
-        button.beginFill(this.button_color);
-        button.drawRect(0, 0, this.width, this.height);
-        button.endFill();
+        this.button_color = 0xffffff;
+        this.over_color = 0x99CCFF;
+        this.out_color = 0xFFFFFF;
 
-        button.x = this.pos_x;
-        button.y = this.pos_y;
-        
-        button.interactive = true;
-        button.buttonMode = true;
+        this.createGraphics();
+        this.app.stage.addChild(this);
 
-        const buttonText = new PIXI.Text(this.text, {
-            fontSize: this.font_size * (app.view.width / 1920 + app.view.height / 1080) * 0.5,
-            fill: this.font_color,
-            align: this.alignment,
+        window.addEventListener("resize", () => this.update());
+    }
+
+    createGraphics() {
+        this.removeChildren();
+
+        const scaleFactorX = this.app.view.width / 1920;
+        const scaleFactorY = this.app.view.height / 1080;
+
+        const newWidth = this.originalWidth * scaleFactorX;
+        const newHeight = this.originalHeight * scaleFactorY;
+        const newPosX = this.originalPosX * scaleFactorX;
+        const newPosY = this.originalPosY * scaleFactorY;
+
+        this.position.set(newPosX, newPosY);
+
+        this.buttonGraphic = new PIXI.Graphics();
+        this.buttonGraphic.beginFill(this.button_color);
+        this.buttonGraphic.drawRect(0, 0, newWidth, newHeight);
+        this.buttonGraphic.endFill();
+
+        this.buttonGraphic.interactive = true;
+        this.buttonGraphic.buttonMode = true;
+
+        this.buttonText = new PIXI.Text(this.text, {
+            fontSize: 24 * (scaleFactorX + scaleFactorY) * 0.5,
+            fill: 0x000000,
+            align: 'center',
         });
-        buttonText.anchor.set(this.anchor);
-        buttonText.x = button.x + button.width / 2;
-        buttonText.y = button.y + button.height / 2;
+        this.buttonText.anchor.set(0.5);
+        this.buttonText.position.set(newWidth / 2, newHeight / 2);
 
-        this.app.stage.addChild(button);
-        this.app.stage.addChild(buttonText);
+        this.addChild(this.buttonGraphic);
+        this.addChild(this.buttonText);
 
-        button.on('pointerdown', () => {
-            console.log('Button clicked!');
+        this.buttonGraphic.on('pointerdown', this.onClick);
+        this.buttonGraphic.on('pointerover', () => {
+            this.buttonGraphic.tint = this.over_color;
         });
-
-        button.on('pointerover', () => {
-            button.tint = 0x99CCFF;
+        this.buttonGraphic.on('pointerout', () => {
+            this.buttonGraphic.tint = this.out_color;
         });
+    }
 
-        button.on('pointerout', () => {
-            button.tint = 0xFFFFFF;
-        });
+    update() {
+        this.createGraphics();
     }
 }
 
