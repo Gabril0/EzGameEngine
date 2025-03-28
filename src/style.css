@@ -1,5 +1,128 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --bg-color:#1a1825;
+    --dark-panel-bg: #2F333F;
+    --blue-highlight: #676FFF;
+    --white: #DADAFE;
+    --text-color-white: white;
+    --shadow-color: rgba(0, 0, 0, 0.5); 
+    --border-radius: 25px; 
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--bg-color)
+}
+
+nav {
+    display: flex;
+    padding: 10px;
+    background: var(--dark-panel-bg);
+    color: var(--white);
+    gap: 10px;
+}
+
+main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+#leftPanel, #rightPanel, #bottomPanel {
+    position: relative;
+    background: var(--white);
+    padding: 10px;
+    color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px var(--shadow-color), inset 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+#leftPanel {
+    width: 20%;
+    min-width: 200px;
+    color: var(--dark-panel-bg);
+    overflow: auto;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    margin-top: 0.5%;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+#rightPanel {
+    width: 20%;
+    min-width: 200px;
+    color: var(--dark-panel-bg);
+    overflow: auto;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    margin-top: 0.5%;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.25);
+    resize: none;
+}
+
+#gameViewContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    min-height: 400px;
+    position: relative;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px var(--shadow-color), inset 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin-top: 0.5%;
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius);
+    aspect-ratio: 16 / 9;
+    background: black;
+}
+
+#bottomPanel {
+    min-height: 150px;
+    overflow: auto;
+    background: var(--dark-panel-bg);
+    margin-bottom: 0.5%;
+    margin-top: 0.5%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px var(--shadow-color), inset 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.25);
+    resize: none;
+}
+
+.resizer {
+    position: absolute;
+    background: transparent;
+}
+
+.resizer:hover {
+    background: var(--white);
+}
+
+.resizer.left, .resizer.right {
+    width: 5px;
+    top: 0;
+    bottom: 0;
+    cursor: ew-resize;
+}
+
+.resizer.top, .resizer.bottom {
+    height: 5px;
+    left: 0;
+    right: 0;
+    cursor: ns-resize;
+}
+
+.resizer.left { left: 0; }
+.resizer.right { right: 0; }
+.resizer.top { top: 0; }
+.resizer.bottom { bottom: 0; }
