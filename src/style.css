@@ -6,23 +6,55 @@
     --text-color-white: white;
     --shadow-color: rgba(0, 0, 0, 0.5); 
     --border-radius: 25px; 
+    --border-radius-top: 0px 0px 25px 25px;
 }
 
 body {
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     display: flex;
     flex-direction: column;
     height: 100vh;
     margin: 0;
     overflow: hidden;
-    background-color: var(--bg-color)
-}
+    background-color: var(--bg-color);
+  }
+  
 
 nav {
+    border-radius: var(--border-radius-top);
     display: flex;
-    padding: 10px;
     background: var(--dark-panel-bg);
     color: var(--white);
-    gap: 10px;
+    padding-bottom: 0.5%;
+}
+
+nav button{
+    padding: 0.25%;
+    font-weight: 700;
+    font-weight: bold;
+    background-color: var(--white);
+    box-shadow: 0 4px 8px var(--shadow-color),
+                inset 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#gameButton{
+    border-radius: 0px 0px 0px 25px;
+
+}
+#codeButton{
+    border-radius: 0px 0px 25px 0px;
+
+}
+#playButton{
+    border-radius: 0px 0px 0px 25px;
+
+}
+#stopButton{
+    border-radius: 0px 0px 25px 0px;
+
 }
 
 main {
@@ -97,6 +129,14 @@ main {
     box-shadow: 0 4px 8px var(--shadow-color), inset 0 4px 8px rgba(0, 0, 0, 0.1);
     box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.25);
     resize: none;
+}
+
+#gameExecutionButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+
+    margin: 0 auto;
 }
 
 .resizer {
