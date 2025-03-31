@@ -27,7 +27,7 @@
         <button id="audioButton">Audio 🎹</button>
         <button id="codeButton">Code ⌨️</button>
         <div id="gameExecutionButtons">
-            <button id="playButton">▶ Play</button>
+			<button id="playButton" onclick="runUserCode()">▶ Play</button>
             <button id="stopButton">■ Stop</button>
         </div>
     </nav>
@@ -36,7 +36,14 @@
         <div id="gameViewContainer">
             <canvas id="gameCanvas"></canvas>
         </div>
-        <div id="rightPanel">Object Properties<div class="resizer left"></div></div>
+		<div id="rightPanel">Object Properties
+			<div class="resizer left"></div>
+			
+			<h1>Exemplo de Jogo com Pixi.js e JS</h1>
+	
+			<!-- Textarea para o código Lua -->
+			<textarea id="userCode" rows="10" cols="50" value="-- Digite seu código js aqui"></textarea><br>
+		</div>
     </main>
     <div id="bottomPanel">File Explorer / Console<div class="resizer top"></div></div>
     <script>
@@ -63,6 +70,33 @@
         makeResizable(document.getElementById('leftPanel'), document.querySelector('.resizer.right'));
         makeResizable(document.getElementById('rightPanel'), document.querySelector('.resizer.left'));
         makeResizable(document.getElementById('bottomPanel'), document.querySelector('.resizer.top'), false);
-    </script>
+		
+		//-------------------------------------Teste execução codigo usuário text area------------------------
+		function runUserCode(){
+			const code = document.getElementById('userCode').value;
+			console.log("Executando código js:\n" + code);
+
+			// "resetando" instancia PIXI.Aplication
+			const container = document.getElementById('gameViewContainer');
+			const canvas = document.getElementById('gameCanvas');
+
+			window.app = new PIXI.Application({
+				view: canvas,
+				width: container.offsetWidth,
+				height: container.offsetHeight,
+				backgroundColor: 0x2f333f
+			});
+
+			// executando código do usuário
+			const runCode = new Function(code);
+			runCode();
+			// eval(code)
+		}
+
+		function stopUserCode(){
+			window.app.stage.removeChildren();
+		}
+	
+	</script>
 </body>
 </html>

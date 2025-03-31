@@ -2,7 +2,7 @@ window.onload = function () {
     const container = document.getElementById('gameViewContainer');
     const canvas = document.getElementById('gameCanvas');
 
-    const app = new PIXI.Application({
+    window.app = new PIXI.Application({
         view: canvas,
         width: container.offsetWidth,
         height: container.offsetHeight,
@@ -15,11 +15,11 @@ window.onload = function () {
     square.endFill();
     square.x = app.screen.width / 2 - 100;
     square.y = app.screen.height / 2 - 100;
-    app.stage.addChild(square);
+    window.app.stage.addChild(square);
 
     let time = 0; 
 
-    app.ticker.add(function (delta) {
+    window.app.ticker.add(function (delta) {
         square.y = app.screen.height / 2 - 100 + Math.sin(time) * 100;
         time += 0.05; 
     });
