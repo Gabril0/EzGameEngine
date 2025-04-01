@@ -30,11 +30,16 @@ class Editor {
         return Editor.instance;
     }
 
-    UpdateObjectList(added_object) {
-        let new_child = document.createElement("button");
-        new_child.textContent = added_object.name;
-        this.leftPanel.appendChild(new_child);
-    }
+    UpdateObjectList(added_object){
+
+    let new_child = document.createElement("button");
+    new_child.textContent = added_object.name;
+
+    let component = document.createElement("div");
+    component.textContent = added_object.position;
+    this.rightPanel.appendChild(component);
+    this.leftPanelList.appendChild(new_child);
+  }
 
     static GetInstance() {
         return Editor.instance;
@@ -57,7 +62,7 @@ window.onload = function () {
 
     // Adding a Game Object
 
-    let gameObject = new GameObject("GameObject 1", [0, 0, 0], [0, 0, 0], [0, 0, 0]);
+    let gameObject = new GameObject("GameObject 1", [2, 2, 0], [0, 0, 0], [0, 0, 0]);
     editor.UpdateObjectList(gameObject);
 
     const square = new PIXI.Graphics();
@@ -80,11 +85,3 @@ window.onload = function () {
     });
 };
 
-function UpdateObjectList(added_object){
-
-    let new_child = document.createElement("button");
-    new_child.textContent = added_object.name;
-
-    leftPanelList.appendChild(new_child);
-
-}
