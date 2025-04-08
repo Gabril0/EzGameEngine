@@ -17,6 +17,14 @@ class Engine{
         hierarchy.push(object);
         return object // Return the object reference inside the hierarchy
     }
+    LoadTexture(path){
+        const sprite = null;
+        PIXI.Assets.load(path).then(texture => {
+            sprite = new PIXI.Sprite(texture);
+
+        });
+        return sprite;
+    }
 
     RemoveObjectFromHierarchy(target_object){
         let index = hierarchy.indexOf(target_object);

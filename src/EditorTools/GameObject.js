@@ -9,6 +9,7 @@ class GameObject{
         this.parent = null;
 
 
+
     }
     Destroy() {
         for (let key in this) {

@@ -6,8 +6,6 @@ class Editor {
         if (!Editor.instance) {
             Editor.instance = this;
 
-            this.engine = new Engine();
-
             // Getting the panels
             this.leftPanel = document.getElementById("leftPanel");
             this.rightPanel = document.getElementById("rightPanel");
@@ -23,8 +21,6 @@ class Editor {
             this.audioButton = document.getElementById("audioButton");
             this.codeButton = document.getElementById("codeButton");
 
-            this.engine = new Engine();
-
             // Making object list and component list
             this.leftPanelList = document.createElement("div");
             this.leftPanel.appendChild(this.leftPanelList);
@@ -38,6 +34,7 @@ class Editor {
         return Editor.instance;
     }
     LeftPanelButtonEvent(){
+        contextMenu.style.display = "none"; // Preventing it from appearing at the start
         this.leftPanel.oncontextmenu = (e) => {
             e.preventDefault();
             
@@ -67,32 +64,62 @@ class Editor {
         }
     }
 
-    CreateField(target_panel, field_name, parameter_list, target_object_variable){
+    CreateField(target_panel, field_name, parameter_list, target_object_variable) {
         let field_div = document.createElement("div");
         field_div.className = "d-flex flex-wrap gap-2";
+    
         let p = document.createElement("p");
         p.textContent = field_name;
         field_div.appendChild(p);
-
+    
         parameter_list.forEach((element, i) => {
             let input = document.createElement("input");
             input.value = element;
             input.className = "propertiesInput";
-            input.style.width =  parameter_list.length > 1? `${100 /(parameter_list.length* 1.75)}%` : "100%";
+            input.style.width = parameter_list.length > 1 ? `${100 / (parameter_list.length * 1.75)}%` : "100%";
+    
             let lastValue = element;
+    
             input.onchange = (e) => {
-                if(e.target.value == ""){
+                if (e.target.value === "") {
                     e.target.value = lastValue;
-                    
                 }
-                target_object_variable[i] = e.target.value;
-
-            }
+                target_object_variable[i] = isNaN(+e.target.value) ? e.target.value : +e.target.value;
+            };
+    
+            // Drag Number Change
+            let isDragging = false;
+            let startX = 0;
+            let startValue = 0;
+    
+            input.addEventListener("mousedown", (e) => {
+                if (isNaN(+input.value)) return; // Number check
+    
+                isDragging = true;
+                startX = e.clientX;
+                startValue = parseFloat(input.value);
+    
+                e.preventDefault();
+            });
+    
+            window.addEventListener("mousemove", (e) => {
+                if (!isDragging) return;
+    
+                const deltaX = e.clientX - startX;
+                let newValue = startValue + deltaX * 0.1;
+    
+                input.value = newValue.toFixed(2);
+                target_object_variable[i] = newValue;
+            });
+    
+            window.addEventListener("mouseup", () => {
+                isDragging = false;
+            });
+    
             field_div.appendChild(input);
         });
-
+    
         target_panel.appendChild(field_div);
-
     }
 
     UpdateObjectList(added_object){
@@ -162,8 +189,9 @@ window.onload = function () {
     const container = document.getElementById('gameViewContainer');
     new Editor();
 
+    let engine = new Engine();  
     let editor = Editor.GetInstance();
-
+    
     const app = new PIXI.Application({
         view: editor.canvas,
         width: container.offsetWidth,
@@ -175,6 +203,9 @@ window.onload = function () {
 
     let gameObject = new GameObject("GameObject 1", [2, 2, 0], [0, 0, 0], [0, 0, 0]);
     editor.UpdateObjectList(gameObject);
+
+    let sprite = engine.LoadTexture('https://pixijs.io/examples/examples/assets/bunny.png');
+    gameObject.components.push(sprite);
 
     // Test square
     const square = new PIXI.Graphics();
