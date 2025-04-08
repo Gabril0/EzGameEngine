@@ -67,6 +67,34 @@ class Editor {
         }
     }
 
+    CreateField(target_panel, field_name, parameter_list, target_object_variable){
+        let field_div = document.createElement("div");
+        field_div.className = "d-flex flex-wrap gap-2";
+        let p = document.createElement("p");
+        p.textContent = field_name;
+        field_div.appendChild(p);
+
+        parameter_list.forEach((element, i) => {
+            let input = document.createElement("input");
+            input.value = element;
+            input.className = "propertiesInput";
+            input.style.width =  parameter_list.length > 1? `${100 /(parameter_list.length* 1.75)}%` : "100%";
+            let lastValue = element;
+            input.onchange = (e) => {
+                if(e.target.value == ""){
+                    e.target.value = lastValue;
+                    
+                }
+                target_object_variable[i] = e.target.value;
+
+            }
+            field_div.appendChild(input);
+        });
+
+        target_panel.appendChild(field_div);
+
+    }
+
     UpdateObjectList(added_object){
 
         let new_child = document.createElement("button");
@@ -76,21 +104,26 @@ class Editor {
 
         new_child.onclick = () => {
             this.ClearList(this.rightPanelList.childNodes);
-
+            
             let object_name = document.createElement("p");
             object_name.textContent = `${added_object.name}`;
             this.rightPanelList.appendChild(object_name);
 
-            let field_name = document.createElement("p");
-            field_name.textContent = `Position X:${added_object.position[0]} Y:${added_object.position[1]} Z:${added_object.position[2]}`;
-            this.rightPanelList.appendChild(field_name);
+            this.CreateField(
+                this.rightPanelList, 
+                "Position",
+                [added_object.position[0], 
+                added_object.position[1], 
+                added_object.position[2]],
+                added_object.position
+            );
             
         }
 
         this.CheckForDuplicatesAndRename(this.leftPanelList.childNodes);
-        added_object.name = new_child.textContent; // To assign a new name if needed
+        added_object.name = new_child.textContent; // To assign a new name if needed for duplicates
 
-        this.engine.AddObjectToHierarchy(added_object);
+        //this.engine.AddObjectToHierarchy(added_object);
 
     }
 
@@ -114,7 +147,7 @@ class Editor {
     }
 
     ClearList(list){
-        list.forEach(element => {
+        Array.from(list).forEach(element => {
             element.remove();
         });
     }
@@ -143,7 +176,20 @@ window.onload = function () {
     let gameObject = new GameObject("GameObject 1", [2, 2, 0], [0, 0, 0], [0, 0, 0]);
     editor.UpdateObjectList(gameObject);
 
+    // Test square
+    const square = new PIXI.Graphics();
+    square.beginFill(0xff00ff);
+    square.drawRect(0, 0, 50, 50);
+    square.endFill();
+
+    square.x = 0;
+    square.y = 0;
+
+    app.stage.addChild(square);
+
     app.ticker.add(function (delta) {
+        square.x = gameObject.position[0];
+        square.y = gameObject.position[1];
     });
 
     window.addEventListener('resize', () => {
