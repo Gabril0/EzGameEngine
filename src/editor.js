@@ -99,7 +99,6 @@ class Editor {
                 startX = e.clientX;
                 startValue = parseFloat(input.value);
     
-                e.preventDefault();
             });
     
             window.addEventListener("mousemove", (e) => {
@@ -201,26 +200,56 @@ window.onload = function () {
 
     // Adding a Game Object
 
-    let gameObject = new GameObject("GameObject 1", [2, 2, 0], [0, 0, 0], [0, 0, 0]);
+    let gameObject = new GameObject("GameObject 1", [2, 2, 0], [0, 0, 0], [1, 1, 1]);
     editor.UpdateObjectList(gameObject);
 
-    let sprite = engine.LoadTexture('https://pixijs.io/examples/examples/assets/bunny.png');
-    gameObject.components.push(sprite);
-
-    // Test square
-    const square = new PIXI.Graphics();
-    square.beginFill(0xff00ff);
-    square.drawRect(0, 0, 50, 50);
-    square.endFill();
-
-    square.x = 0;
-    square.y = 0;
-
-    app.stage.addChild(square);
-
+    engine.LoadTexture('https://pixijs.io/examples/examples/assets/bunny.png').then(sprite => {
+        gameObject.AddComponent(sprite);
+        app.stage.addChild(sprite);
+    });
+    
+    const keys = {
+        w: false,
+        a: false,
+        s: false,
+        d: false
+    };
+    const speed = 5;
     app.ticker.add(function (delta) {
-        square.x = gameObject.position[0];
-        square.y = gameObject.position[1];
+
+        if(keys.w){
+            gameObject.position[1] += -speed * delta;
+        }
+        if(keys.s){
+            gameObject.position[1] += speed * delta;
+        }
+        if(keys.a){
+            gameObject.position[0] += -speed * delta;
+        }
+        if(keys.d){
+            gameObject.position[0] += +speed * delta;
+        }
+        
+
+        gameObject.Update();
+    });
+    
+    window.addEventListener('keydown', (e) => {
+        switch (e.key.toLowerCase()) {
+            case 'w': keys.w = true; break;
+            case 'a': keys.a = true; break;
+            case 's': keys.s = true; break;
+            case 'd': keys.d = true; break;
+        }
+    });
+    
+    window.addEventListener('keyup', (e) => {
+        switch (e.key.toLowerCase()) {
+            case 'w': keys.w = false; break;
+            case 'a': keys.a = false; break;
+            case 's': keys.s = false; break;
+            case 'd': keys.d = false; break;
+        }
     });
 
     window.addEventListener('resize', () => {

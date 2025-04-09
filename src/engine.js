@@ -17,13 +17,15 @@ class Engine{
         hierarchy.push(object);
         return object // Return the object reference inside the hierarchy
     }
-    LoadTexture(path){
-        const sprite = null;
-        PIXI.Assets.load(path).then(texture => {
-            sprite = new PIXI.Sprite(texture);
-
+    LoadTexture(path) {
+        return PIXI.Assets.load(path).then(texture => {
+            return new PIXI.Sprite(texture);
         });
-        return sprite;
+    }
+
+    RefreshCurrentSprite(){
+        
+
     }
 
     RemoveObjectFromHierarchy(target_object){
