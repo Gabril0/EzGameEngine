@@ -13,6 +13,14 @@
     <script src="/node_modules/fengari-web/dist/fengari-web.js"></script>
     <script type="module" src="/src/editor.js"></script>
 
+	<!-- code editor -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+	<script type="module" src="/src/script.js"></script>
+	<link rel="stylesheet" href="/src/script.css"/>
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -39,11 +47,12 @@
 		<div id="rightPanel">Object Properties
 			<div class="resizer left"></div>
 			
-			<h1>Exemplo de Jogo com Pixi.js e JS</h1>
+			<!-- <h1>Exemplo de Jogo com Pixi.js e JS</h1> -->
 	
 			<!-- Textarea para o código Lua -->
-			<textarea id="userCode" rows="10" cols="50" value="-- Digite seu código js aqui"></textarea><br>
+			<!-- <textarea id="userCode" rows="10" cols="50" value="-- Digite seu código js aqui"></textarea><br> -->
 		</div>
+		<div id="code" style="display: show;"></div>
     </main>
     <div id="bottomPanel">File Explorer / Console<div class="resizer top"></div></div>
     <script>
