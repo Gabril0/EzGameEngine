@@ -1,4 +1,4 @@
-import { GameComponent } from "./GameComponent";
+import { GameComponent } from "./GameComponent.js";
 class GameObject{
     #components = [];
     constructor(name, position, rotation, scale){
@@ -13,14 +13,14 @@ class GameObject{
 
     }
     Start(){
-        this.components.forEach(component => {
+        this.#components.forEach(component => {
             if(component instanceof GameComponent){
                 component.Start();
             }
         });
     }
     Update(delta) {
-        this.components.forEach(component => {
+        this.#components.forEach(component => {
             if (component instanceof PIXI.Sprite || component instanceof PIXI.Container) {
                 component.x = this.position[0];
                 component.y = this.position[1];
@@ -40,7 +40,7 @@ class GameObject{
         Engine.instance.RemoveObjectFromHierarchy(this);
     }
     AddComponent(component){
-        this.#components.add(component);
+        this.#components.push(component);
         if(component instanceof GameComponent){
             component.gameObject = GameObject;
         }   

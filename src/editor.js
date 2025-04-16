@@ -134,7 +134,8 @@ class Editor {
             let object_name = document.createElement("p");
             object_name.textContent = `${added_object.name}`;
             this.rightPanelList.appendChild(object_name);
-
+            
+            // Dealing with position
             this.CreateField(
                 this.rightPanelList, 
                 "Position",
@@ -143,6 +144,14 @@ class Editor {
                 added_object.position[2]],
                 added_object.position
             );
+            alert("This is what you need to do: Create a intermediary function using CreateField, and then create some other functions to deal with each of the datatypes");
+            alert("also, for some reason it isnt going through this loop");
+            added_object.GetComponents().foreach(component => {
+                // Dealing with Pixi Sprite(if it exists)
+                this.BasePixiComponentExposing(component);
+
+
+            });
             
         }
 
@@ -150,6 +159,21 @@ class Editor {
         added_object.name = new_child.textContent; // To assign a new name if needed for duplicates
 
         //this.engine.AddObjectToHierarchy(added_object);
+
+    }
+
+    BasePixiComponentExposing(component){
+        if(component instanceof PIXI.Sprite){
+            this.CreateField(
+                this.rightPanelList,
+                "image",
+                component.texture.baseTexture.resource.source,
+                component.texture.baseTexture.resource.source 
+
+
+            )
+
+        }
 
     }
 
