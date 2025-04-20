@@ -16,14 +16,15 @@ class GameComponent{
 
     }
 
-}
+}export{GameComponent};
+
 const FieldType = Object.freeze({
     FLOAT: 'float',
+    VECTOR3: 'vector3',
+    VECTOR2: 'vector2',
     INT: 'int',
     STRING: 'string',
     BOOL: 'bool',
     FILE: 'file',
-    CHECKBOX: 'checkbox',
     LIST: 'list'
-});
-export{GameComponent};
+});export{FieldType}

@@ -1,5 +1,6 @@
 import { Engine } from "./Engine.js";
 import { GameObject } from "./EditorTools/GameObject.js";
+import { FieldType } from "./EditorTools/GameObject.js";
 
 class Editor {
     constructor() {
@@ -64,7 +65,43 @@ class Editor {
         }
     }
 
-    CreateField(target_panel, field_name, parameter_list, target_object_variable) {
+    // Create Field and datatype behaviours
+
+    CreateField(target_panel, exposed_variable){ // An exposed variable is like ["Size", [1,2,3], FieldType.FLOAT]
+        let fieldName = exposed_variable[0];
+        let contentArray = exposed_variable[1];
+        let contentType = exposed_variable[2];
+        switch(contentType){
+            case(FieldType.FLOAT):
+
+                break;
+            case(FieldType.VECTOR2):
+
+                break;
+            case(FieldType.VECTOR3):
+                this.CreateFieldVector3(target_panel, fieldName, contentArray);
+                break;
+            case(FieldType.INT):
+
+                break;
+            case(FieldType.STRING):
+
+                break;
+            case(FieldType.BOOL):
+
+                break;
+            case(FieldType.FILE):
+
+                break;
+            case(FieldType.LIST):
+
+                break;
+
+        }
+
+    }
+
+    CreateFieldVector3(target_panel, field_name, parameter_list) {
         let field_div = document.createElement("div");
         field_div.className = "d-flex flex-wrap gap-2";
     
@@ -77,49 +114,56 @@ class Editor {
             input.value = element;
             input.className = "propertiesInput";
             input.style.width = parameter_list.length > 1 ? `${100 / (parameter_list.length * 1.75)}%` : "100%";
-    
-            let lastValue = element;
-    
-            input.onchange = (e) => {
-                if (e.target.value === "") {
-                    e.target.value = lastValue;
-                }
-                target_object_variable[i] = isNaN(+e.target.value) ? e.target.value : +e.target.value;
-            };
-    
-            // Drag Number Change
-            let isDragging = false;
-            let startX = 0;
-            let startValue = 0;
-    
-            input.addEventListener("mousedown", (e) => {
-                if (isNaN(+input.value)) return; // Number check
-    
-                isDragging = true;
-                startX = e.clientX;
-                startValue = parseFloat(input.value);
-    
-            });
-    
-            window.addEventListener("mousemove", (e) => {
-                if (!isDragging) return;
-    
-                const deltaX = e.clientX - startX;
-                let newValue = startValue + deltaX * 0.1;
-    
-                input.value = newValue.toFixed(2);
-                target_object_variable[i] = newValue;
-            });
-    
-            window.addEventListener("mouseup", () => {
-                isDragging = false;
-            });
+            this.NumberBehavior(input, parameter_list);
     
             field_div.appendChild(input);
         });
     
         target_panel.appendChild(field_div);
     }
+
+    NumberBehavior(input, change_target){
+        let lastValue = element;
+    
+        input.onchange = (e) => {
+            if (e.target.value === "") {
+                e.target.value = lastValue;
+            }
+            change_target.foreach((element, i) => {
+                change_target[i] = isNaN(+e.target.value) ? e.target.value : +e.target.value;
+            });
+            
+        };
+
+        let isDragging = false;
+        let startX = 0;
+        let startValue = 0;
+
+        input.addEventListener("mousedown", (e) => {
+            if (isNaN(+input.value)) return; // Number check
+
+            isDragging = true;
+            startX = e.clientX;
+            startValue = parseFloat(input.value);
+
+        });
+
+        window.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+
+            const deltaX = e.clientX - startX;
+            let newValue = startValue + deltaX * 0.1;
+
+            input.value = newValue.toFixed(2);
+            target_object_variable[i] = newValue;
+        });
+
+        window.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+    }
+
+    // END Create Field
 
     UpdateObjectList(added_object){
 
@@ -136,17 +180,16 @@ class Editor {
             this.rightPanelList.appendChild(object_name);
             
             // Dealing with position
-            this.CreateField(
-                this.rightPanelList, 
+            let position_component = [
                 "Position",
-                [added_object.position[0], 
-                added_object.position[1], 
-                added_object.position[2]],
-                added_object.position
-            );
+                [added_object.position[0], added_object.position[1], added_object.position[2]],
+                FieldType.VECTOR3
+            ]
+            this.CreateField(this.rightPanelList, position_component);
             alert("This is what you need to do: Create a intermediary function using CreateField, and then create some other functions to deal with each of the datatypes");
             alert("also, for some reason it isnt going through this loop");
             added_object.GetComponents().foreach(component => {
+                alert("running this loop");
                 // Dealing with Pixi Sprite(if it exists)
                 this.BasePixiComponentExposing(component);
 
