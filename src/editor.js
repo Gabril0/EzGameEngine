@@ -1,6 +1,6 @@
 import { Engine } from "./Engine.js";
 import { GameObject } from "./EditorTools/GameObject.js";
-import { FieldType } from "./EditorTools/GameObject.js";
+import { FieldType } from "./EditorTools/GameComponent.js";
 
 class Editor {
     constructor() {
@@ -114,7 +114,7 @@ class Editor {
             input.value = element;
             input.className = "propertiesInput";
             input.style.width = parameter_list.length > 1 ? `${100 / (parameter_list.length * 1.75)}%` : "100%";
-            this.NumberBehavior(input, parameter_list);
+            this.NumberBehavior(input, element,parameter_list);
     
             field_div.appendChild(input);
         });
@@ -122,14 +122,14 @@ class Editor {
         target_panel.appendChild(field_div);
     }
 
-    NumberBehavior(input, change_target){
+    NumberBehavior(input, element, change_target){
         let lastValue = element;
     
         input.onchange = (e) => {
             if (e.target.value === "") {
                 e.target.value = lastValue;
             }
-            change_target.foreach((element, i) => {
+            change_target.foreach((_, i) => {
                 change_target[i] = isNaN(+e.target.value) ? e.target.value : +e.target.value;
             });
             
@@ -155,7 +155,10 @@ class Editor {
             let newValue = startValue + deltaX * 0.1;
 
             input.value = newValue.toFixed(2);
-            target_object_variable[i] = newValue;
+            change_target.foreach((_, i) => {
+                change_target[i] = newValue;
+            });
+            
         });
 
         window.addEventListener("mouseup", () => {

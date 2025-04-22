@@ -16,7 +16,7 @@ class GameComponent{
 
     }
 
-}export{GameComponent};
+}
 
 const FieldType = Object.freeze({
     FLOAT: 'float',
@@ -27,4 +27,6 @@ const FieldType = Object.freeze({
     BOOL: 'bool',
     FILE: 'file',
     LIST: 'list'
-});export{FieldType}
+});
+
+export { GameComponent, FieldType };
