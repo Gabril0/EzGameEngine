@@ -1,4 +1,4 @@
-import { Engine } from "./Engine.js";
+import { Engine } from "./engine.js";
 import { GameObject } from "./EditorTools/GameObject.js";
 import { FieldType } from "./EditorTools/GameComponent.js";
 
@@ -73,22 +73,22 @@ class Editor {
         let contentType = exposed_variable[2];
         switch(contentType){
             case(FieldType.FLOAT):
-
+                this.CreateFieldNumber(target_panel, fieldName, contentArray, false);
                 break;
             case(FieldType.VECTOR2):
-
+                this.CreateFieldVector3(target_panel, fieldName, contentArray);
                 break;
             case(FieldType.VECTOR3):
                 this.CreateFieldVector3(target_panel, fieldName, contentArray);
                 break;
             case(FieldType.INT):
-
+                this.CreateFieldNumber(target_panel, fieldName, contentArray, true);
                 break;
             case(FieldType.STRING):
-
+                this.CreateFieldString(target_panel, fieldName, contentArray);
                 break;
             case(FieldType.BOOL):
-
+                this.CreateFieldCheckBox(target_panel, fieldName, contentArray);
                 break;
             case(FieldType.FILE):
 
@@ -99,6 +99,63 @@ class Editor {
 
         }
 
+    }
+
+    CreateFieldCheckBox(target_panel, field_name, bool){
+        let field_div = document.createElement("div");
+        field_div.className = "d-flex flex-wrap gap-2";
+    
+        let p = document.createElement("p");
+        p.textContent = field_name;
+        field_div.appendChild(p);
+
+        let checkbox = document.createElement("checkbox");
+        checkbox.className = "propertiesInput";
+        checkbox.value = bool;
+
+        field_div.appendChild(checkbox);
+    
+        target_panel.appendChild(field_div);
+
+
+    }
+    CreateFieldNumber(target_panel, field_name, number, isInt){
+        let field_div = document.createElement("div");
+        field_div.className = "d-flex flex-wrap gap-2";
+    
+        let p = document.createElement("p");
+        p.textContent = field_name;
+        field_div.appendChild(p);
+
+        let input = document.createElement("input");
+        input.textContent = number;
+        input.className = "propertiesInput";
+
+        if(isInt){
+            input.addEventListener('input', function(event) {
+                parseInt(event);
+            });
+        }
+        this.NumberBehavior(input);
+        field_div.appendChild(input);
+    
+        target_panel.appendChild(field_div);
+    }
+
+    CreateFieldString(target_panel, field_name, string){
+        let field_div = document.createElement("div");
+        field_div.className = "d-flex flex-wrap gap-2";
+    
+        let p = document.createElement("p");
+        p.textContent = field_name;
+        field_div.appendChild(p);
+
+        let input = document.createElement("input");
+        input.textContent = string;
+        input.className = "propertiesInput";
+        field_div.appendChild(input);
+    
+        target_panel.appendChild(field_div);
     }
 
     CreateFieldVector3(target_panel, field_name, parameter_list) {
@@ -271,7 +328,7 @@ window.onload = function () {
     // Adding a Game Object
 
     let gameObject = new GameObject("GameObject 1", [2, 2, 0], [0, 0, 0], [1, 1, 1]);
-    editor.UpdateObjectList(gameObject);
+    editor.UpdateObjectList(gameObject); 
 
     engine.LoadTexture('https://pixijs.io/examples/examples/assets/bunny.png').then(sprite => {
         gameObject.AddComponent(sprite);
