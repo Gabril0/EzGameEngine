@@ -14,13 +14,17 @@ class Engine{
     AddObjectToHierarchy(object){
         object.isEnabled = true;
 
-        hierarchy.push(object);
+        this.hierarchy.push(object);
         return object // Return the object reference inside the hierarchy
     }
     LoadTexture(path) {
         return PIXI.Assets.load(path).then(texture => {
             return new PIXI.Sprite(texture);
         });
+    }
+
+    GetAllObjects() {
+        return this.hierarchy;
     }
 
     RefreshCurrentSprite(){
